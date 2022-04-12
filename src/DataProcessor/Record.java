@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Record {
+    public final String recordId;
     public final ArrayList<Integer> items;
 
-    public Record(ArrayList<Integer> items) {
+    public Record(String recordId, ArrayList<Integer> items) {
+        this.recordId = recordId;
         this.items = items;
     }
 
