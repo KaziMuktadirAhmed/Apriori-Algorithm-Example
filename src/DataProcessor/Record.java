@@ -20,7 +20,7 @@ public class Record {
                 break;
             }
         }
-        return  isInside;
+        return isInside;
     }
 
     public boolean has (ArrayList<Integer> targetItems) {
