@@ -33,4 +33,12 @@ public class Record {
         }
         return isInside;
     }
+
+    public boolean match (ArrayList<Integer> toBeMatched) {
+        boolean isMatch = false;
+        if (toBeMatched.size() == items.size()) {
+              isMatch = has(toBeMatched);
+        }
+        return  isMatch;
+    }
 }
