@@ -34,7 +34,7 @@ public class Processor {
 
         ArrayList<Record> four_len_recs = generate_next_gen(three_len_recs);
 
-        for (Record rec: support_counts_without_min.get(4)) {
+        for (Record rec: support_counts.get(2)) {
             rec.print();
         }
     }
@@ -55,7 +55,15 @@ public class Processor {
 
                     if(!find_record(temp_rec, next_gen)) {
                         rec = new Record("hello" + i + "prev", temp_rec);
-                        rec.count = input_processor.count_record(rec);
+
+                        if(prev_gen.get(0).items.size() == 1)
+                            rec.count = input_processor.count_record(rec);
+                        else {
+                            if(find_min_count(rec, prev_gen) != -1)
+                                rec.count = find_min_count(rec, prev_gen);
+                            else
+                                rec.count = 0;
+                        }
 
                         if(rec.count >= this.min_support_count) {
                             next_gen.add(rec);
@@ -71,8 +79,16 @@ public class Processor {
         return next_gen;
     }
 
-    private void set_support_without_min(int len, ArrayList<Record> recs) {
-        support_counts_without_min.put(len, recs);
+    private int find_min_count (Record cur_rec, ArrayList<Record> pre_gen) {
+        int count = Integer.MAX_VALUE;
+        for (Record rec: pre_gen) {
+            if(cur_rec.has(rec.items)){
+                if(rec.count < count)
+                    count = rec.count;
+            }
+        }
+        if(count == Integer.MAX_VALUE) count = -1;
+        return count;
     }
 
     private boolean find_record (ArrayList<Integer> temp_rec, ArrayList<Record> rec_list) {
