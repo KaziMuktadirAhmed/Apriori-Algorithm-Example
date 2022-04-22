@@ -20,15 +20,6 @@ public class Processor {
     public void configure (String filePath) throws FileNotFoundException {
         this.input_processor = new Input(filePath);
         this.total_data_count = input_processor.databaseSize();
-//        support_counts.put(1, input_processor.get_one_len_rec());
-//
-//        ArrayList<Record> two_len_recs = generate_next_gen(support_counts.get(1));
-//        support_counts.put(2, two_len_recs);
-//
-//        ArrayList<Record> three_len_recs = generate_next_gen(two_len_recs);
-//        support_counts.put(3, three_len_recs);
-//
-//        ArrayList<Record> four_len_recs = generate_next_gen(three_len_recs);
         generate_combinations();
 
         for (Record rec: support_counts.get(4)) {
@@ -81,7 +72,7 @@ public class Processor {
                     temp_rec.add(num);
 
                     if(!find_record(temp_rec, next_gen)) {
-                        rec = new Record("hello" + i + "prev", temp_rec);
+                        rec = new Record("okay", temp_rec);
                         rec.count = input_processor.count_record(rec);
                         next_gen.add(rec);
                     }
