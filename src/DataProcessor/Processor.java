@@ -22,22 +22,26 @@ public class Processor {
     public void configure (String filePath) throws FileNotFoundException {
         this.input_processor = new Input(filePath);
         this.total_data_count = input_processor.databaseSize();
+
         support_counts.put(1, input_processor.get_one_len_rec());
+        support_counts_without_min.put(1, input_processor.get_one_len_rec());
 
         ArrayList<Record> two_len_recs = generate_next_gen(support_counts.get(1));
         support_counts.put(2, two_len_recs);
 
         ArrayList<Record> three_len_recs = generate_next_gen(two_len_recs);
+        support_counts.put(3, three_len_recs);
 
         ArrayList<Record> four_len_recs = generate_next_gen(three_len_recs);
 
-        for (Record rec: four_len_recs) {
+        for (Record rec: support_counts.get(3)) {
             rec.print();
         }
     }
 
     private ArrayList<Record> generate_next_gen (ArrayList<Record> prev_gen) {
         ArrayList<Record> next_gen = new ArrayList<>();
+        ArrayList<Record> next_gen_without_min = new ArrayList<>();
 
         for(int i=0; i<prev_gen.size(); i++) {
             Record rec;
@@ -53,9 +57,11 @@ public class Processor {
                         rec = new Record("hello" + i + "prev", temp_rec);
                         rec.count = input_processor.count_record(rec);
 
-                        if(rec.count >= min_support_count) {
+                        if(rec.count >= this.min_support_count) {
                             next_gen.add(rec);
-                        }
+                            next_gen_without_min.add(rec);
+                        } else
+                            next_gen_without_min.add(rec);
                     }
                 }
             }
