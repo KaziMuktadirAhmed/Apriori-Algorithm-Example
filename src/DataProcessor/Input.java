@@ -61,4 +61,12 @@ public class Input {
 
         return one_len_count;
     }
+
+    public int count_record (Record rec) {
+        int count = 0;
+        for (Record r: database) {
+            if(r.has(rec.items)) count++;
+        }
+        return count;
+    }
 }
