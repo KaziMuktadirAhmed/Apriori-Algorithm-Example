@@ -46,4 +46,12 @@ public class Record {
         }
         return  isMatch;
     }
+
+    public void print () {
+        System.out.println(recordId);
+        for (Integer num: items) {
+            System.out.print(num + " ");
+        }
+        System.out.println("Support count: " + count);
+    }
 }
