@@ -15,7 +15,6 @@ public class Input {
         this.inputFile = new File(inputFilePath);
         database = new ArrayList<>();
         readFromFile();
-        get_one_len_rec();
     }
 
     public void readFromFile () throws FileNotFoundException {
