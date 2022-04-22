@@ -6,10 +6,12 @@ import java.util.Objects;
 public class Record {
     public final String recordId;
     public final ArrayList<Integer> items;
+    public final int count;
 
-    public Record(String recordId, ArrayList<Integer> items) {
+    public Record(String recordId, ArrayList<Integer> items, int count) {
         this.recordId = recordId;
         this.items = items;
+        this.count = count;
     }
 
     public int length () {

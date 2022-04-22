@@ -12,4 +12,8 @@ public class Processor {
         this.min_support = min_support;
         this.oneLengthRecords = oneLengthRecords;
     }
+
+
+
+
 }
