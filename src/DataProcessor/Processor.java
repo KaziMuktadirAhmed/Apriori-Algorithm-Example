@@ -14,6 +14,4 @@ public class Processor {
         this.oneLengthRecords = oneLengthRecords;
         this.twoLengthRecords = twoLengthRecords;
     }
-
-//    public
 }
