@@ -8,7 +8,6 @@ public class Processor {
     private final int min_support_count;
 
     private Input input_processor;
-    private final HashMap<Integer, ArrayList<Record>> support_counts_without_min;
     private final HashMap<Integer, ArrayList<Record>> support_counts;
 
     private int total_data_count;
@@ -16,15 +15,12 @@ public class Processor {
     public Processor(int min_support_count) {
         this.min_support_count = min_support_count;
         this.support_counts = new HashMap<>();
-        this.support_counts_without_min = new HashMap<>();
     }
 
     public void configure (String filePath) throws FileNotFoundException {
         this.input_processor = new Input(filePath);
         this.total_data_count = input_processor.databaseSize();
-
         support_counts.put(1, input_processor.get_one_len_rec());
-        support_counts_without_min.put(1, input_processor.get_one_len_rec());
 
         ArrayList<Record> two_len_recs = generate_next_gen(support_counts.get(1));
         support_counts.put(2, two_len_recs);
@@ -34,14 +30,13 @@ public class Processor {
 
         ArrayList<Record> four_len_recs = generate_next_gen(three_len_recs);
 
-        for (Record rec: support_counts.get(2)) {
+        for (Record rec: support_counts.get(3)) {
             rec.print();
         }
     }
 
     private ArrayList<Record> generate_next_gen (ArrayList<Record> prev_gen) {
         ArrayList<Record> next_gen = new ArrayList<>();
-        ArrayList<Record> next_gen_without_min = new ArrayList<>();
 
         for(int i=0; i<prev_gen.size(); i++) {
             Record rec;
@@ -55,40 +50,16 @@ public class Processor {
 
                     if(!find_record(temp_rec, next_gen)) {
                         rec = new Record("hello" + i + "prev", temp_rec);
+                        rec.count = input_processor.count_record(rec);
 
-                        if(prev_gen.get(0).items.size() == 1)
-                            rec.count = input_processor.count_record(rec);
-                        else {
-                            if(find_min_count(rec, prev_gen) != -1)
-                                rec.count = find_min_count(rec, prev_gen);
-                            else
-                                rec.count = 0;
-                        }
-
-                        if(rec.count >= this.min_support_count) {
+                        if(rec.count >= this.min_support_count)
                             next_gen.add(rec);
-                            next_gen_without_min.add(rec);
-                        } else
-                            next_gen_without_min.add(rec);
                     }
                 }
             }
         }
 
-        support_counts_without_min.put(prev_gen.get(0).items.size()+1, next_gen_without_min);
         return next_gen;
-    }
-
-    private int find_min_count (Record cur_rec, ArrayList<Record> pre_gen) {
-        int count = Integer.MAX_VALUE;
-        for (Record rec: pre_gen) {
-            if(cur_rec.has(rec.items)){
-                if(rec.count < count)
-                    count = rec.count;
-            }
-        }
-        if(count == Integer.MAX_VALUE) count = -1;
-        return count;
     }
 
     private boolean find_record (ArrayList<Integer> temp_rec, ArrayList<Record> rec_list) {
@@ -111,5 +82,4 @@ public class Processor {
         }
         return uncommon;
     }
-
 }
