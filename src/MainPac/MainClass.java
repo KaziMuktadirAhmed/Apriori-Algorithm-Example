@@ -1,6 +1,7 @@
 package MainPac;
 
 import DataProcessor.Input;
+import DataProcessor.Processor;
 
 import java.io.FileNotFoundException;
 
@@ -11,7 +12,7 @@ public class MainClass {
     }
 
     public static void run() throws FileNotFoundException {
-        Input input = new Input("src/input.txt");
-        input.readFromFile();
+        Processor processor = new Processor(2);
+        processor.configure("src/input.txt");
     }
 }
