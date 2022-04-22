@@ -20,20 +20,52 @@ public class Processor {
     public void configure (String filePath) throws FileNotFoundException {
         this.input_processor = new Input(filePath);
         this.total_data_count = input_processor.databaseSize();
-        support_counts.put(1, input_processor.get_one_len_rec());
+//        support_counts.put(1, input_processor.get_one_len_rec());
+//
+//        ArrayList<Record> two_len_recs = generate_next_gen(support_counts.get(1));
+//        support_counts.put(2, two_len_recs);
+//
+//        ArrayList<Record> three_len_recs = generate_next_gen(two_len_recs);
+//        support_counts.put(3, three_len_recs);
+//
+//        ArrayList<Record> four_len_recs = generate_next_gen(three_len_recs);
+        generate_combinations();
 
-        ArrayList<Record> two_len_recs = generate_next_gen(support_counts.get(1));
-        support_counts.put(2, two_len_recs);
-
-        ArrayList<Record> three_len_recs = generate_next_gen(two_len_recs);
-        support_counts.put(3, three_len_recs);
-
-        ArrayList<Record> four_len_recs = generate_next_gen(three_len_recs);
-
-        for (Record rec: support_counts.get(3)) {
+        for (Record rec: support_counts.get(4)) {
             rec.print();
         }
     }
+
+    private void generate_combinations () {
+        support_counts.put(1, input_processor.get_one_len_rec());
+
+        for(int i=1; ; i++) {
+            ArrayList<Record> pre_gen = support_counts.get(i);
+            ArrayList<Record> next_gen = generate_next_gen(pre_gen);
+
+            if(next_gen.size() > 0) {
+                ArrayList<Record> rec_after_prune = prune_recs(next_gen);
+                if(rec_after_prune.size() > 0)
+                    support_counts.put(i+1, rec_after_prune);
+                else {
+                    support_counts.put(i+1, next_gen);
+                    break;
+                }
+            }
+            else
+                break;
+        }
+    }
+
+    private ArrayList<Record> prune_recs (ArrayList<Record> recs) {
+        ArrayList<Record> result = new ArrayList<>();
+        for (Record rec: recs) {
+            if(rec.count >= this.min_support_count)
+            result.add(rec);
+        }
+        return result;
+    }
+
 
     private ArrayList<Record> generate_next_gen (ArrayList<Record> prev_gen) {
         ArrayList<Record> next_gen = new ArrayList<>();
@@ -51,9 +83,7 @@ public class Processor {
                     if(!find_record(temp_rec, next_gen)) {
                         rec = new Record("hello" + i + "prev", temp_rec);
                         rec.count = input_processor.count_record(rec);
-
-                        if(rec.count >= this.min_support_count)
-                            next_gen.add(rec);
+                        next_gen.add(rec);
                     }
                 }
             }
