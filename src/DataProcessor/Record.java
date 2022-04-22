@@ -12,6 +12,10 @@ public class Record {
         this.items = items;
     }
 
+    public int length () {
+        return items.size();
+    }
+
     public boolean has (Integer targetItem) {
         boolean isInside = false;
         for (Integer itm : items) {
