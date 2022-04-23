@@ -24,10 +24,6 @@ public class Processor {
         generate_combinations();
 
         Record target = support_counts.get(4).get(0);
-        Record given = support_counts.get(1).get(4);
-
-        double conf = calculate_confidence(target, given.items);
-//        System.out.println(conf);
         confidence_for_all_cond(target.items);
     }
 
@@ -117,7 +113,10 @@ public class Processor {
             }
             if(found != null) break;
         }
-        if (found == null) return;
+        if (found == null){
+            System.out.println("Not found in confidence hash");
+            return;
+        }
 
         for (int i=1; i<target.size(); i++){
             for(int j=0; j<support_counts.get(i).size(); j++) {
@@ -125,7 +124,7 @@ public class Processor {
                 Record cond = support_counts.get(i).get(j);
                 if(found.has(cond.items)){
                     conf = (double) found.count/cond.count;
-                    System.out.println("Cond: "+cond.print()+"-> item: "+found.print()+ " Conf: "+ conf*100+"%");
+                    System.out.println("Cond: "+cond.print()+"=> item: "+found.print()+ " Conf: "+ conf*100+"%");
                 }
             }
         }
