@@ -20,7 +20,9 @@ public class MainClass {
         initial_input();
         Processor processor = new Processor(2);
         processor.configure("src/input.txt");
-        processor.confidence_for_all_cond(conf_inp());
+        ArrayList<Integer> inp_list = conf_inp();
+        processor.calculate_support(inp_list);
+        processor.confidence_for_all_cond(inp_list);
     }
 
     public static void initial_input() throws IOException {

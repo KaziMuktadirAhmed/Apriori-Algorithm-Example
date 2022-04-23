@@ -142,4 +142,24 @@ public class Processor {
         if (found != null) confidence = (double) target.count/ found.count;
         return confidence;
     }
+
+    public void calculate_support(ArrayList<Integer> target) {
+        double support = 0.0;
+        Record found = null;
+        for (Map.Entry<Integer, ArrayList<Record>> recs: support_counts.entrySet()) {
+            for (Record rec: recs.getValue()) {
+                if(rec.match(target)) {
+                    found = rec;
+                    support = (double) found.count/this.total_data_count;
+                    break;
+                }
+            }
+            if(found != null) break;
+        }
+        if (found == null){
+            System.out.println("Not found in confidence hash");
+            return;
+        }
+        System.out.println("Item: " + found.print() + "Support: " + support*100 + "%");
+    }
 }
