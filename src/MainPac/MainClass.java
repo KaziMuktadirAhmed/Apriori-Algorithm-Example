@@ -10,18 +10,18 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MainClass {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         System.out.println("Hello world");
         run();
     }
 
-    public static void run() throws FileNotFoundException {
+    public static void run() throws IOException {
         initial_input();
         Processor processor = new Processor(2);
         processor.configure("src/input.txt");
     }
 
-    public static void initial_input() {
+    public static void initial_input() throws IOException {
         System.out.println("Do you want to add to the existing data ? (Y/N)");
         Scanner scanner = new Scanner(System.in);
         String usr_inp = scanner.nextLine();
@@ -34,14 +34,20 @@ public class MainClass {
                 for(int i=0; i<inp_len; i++) {
                     inp_list.add(scanner.nextInt());
                 }
+                write_in_file(inp_len, inp_list);
                 inp_len = scanner.nextInt();
             }
         }
     }
 
     public static void write_in_file(int len, ArrayList<Integer> items) throws IOException {
-        FileWriter fileWriter = new FileWriter(new File("src/input.txt"));
-
+        FileWriter fileWriter = new FileWriter(new File("src/input.txt"), true);
+        String id = "\nS0"+len;
+        fileWriter.write(id+" ");
+        for (Integer itm: items) {
+            fileWriter.write(itm+" ");
+        }
+        fileWriter.close();
     }
 }
 
