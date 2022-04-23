@@ -24,7 +24,7 @@ public class Processor {
         generate_combinations();
 
         Record target = support_counts.get(4).get(0);
-        confidence_for_all_cond(target.items);
+//        confidence_for_all_cond(target.items);
     }
 
     private void generate_combinations () {

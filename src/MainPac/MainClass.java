@@ -1,6 +1,7 @@
 package MainPac;
 
 import DataProcessor.Processor;
+import DataProcessor.Record;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,6 +20,7 @@ public class MainClass {
         initial_input();
         Processor processor = new Processor(2);
         processor.configure("src/input.txt");
+        processor.confidence_for_all_cond(conf_inp());
     }
 
     public static void initial_input() throws IOException {
@@ -38,6 +40,17 @@ public class MainClass {
                 inp_len = scanner.nextInt();
             }
         }
+    }
+
+    public static ArrayList<Integer> conf_inp() {
+        System.out.println("Please input record: (Input format: <record size> <item 1> <item 2> <item 3> .....)");
+        Scanner scanner = new Scanner(System.in);
+        int inp_len = scanner.nextInt();
+        ArrayList<Integer> inp_list = new ArrayList<>();
+        for(int i=0; i<inp_len; i++) {
+            inp_list.add(scanner.nextInt());
+        }
+        return inp_list;
     }
 
     public static void write_in_file(int len, ArrayList<Integer> items) throws IOException {
