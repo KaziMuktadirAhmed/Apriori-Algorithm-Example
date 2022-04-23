@@ -3,6 +3,7 @@ package DataProcessor;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Processor {
     private final int min_support_count;
@@ -22,9 +23,11 @@ public class Processor {
         this.total_data_count = input_processor.databaseSize();
         generate_combinations();
 
-        for (Record rec: support_counts.get(4)) {
-            rec.print();
-        }
+        Record target = support_counts.get(4).get(0);
+        Record given = support_counts.get(1).get(4);
+
+        double conf = calculate_confidence(target, given);
+        System.out.println(conf);
     }
 
     private void generate_combinations () {
@@ -43,8 +46,7 @@ public class Processor {
                     break;
                 }
             }
-            else
-                break;
+            else break;
         }
     }
 
@@ -98,9 +100,24 @@ public class Processor {
     private ArrayList<Integer> find_uncommon (Record r1, Record r2) {
         ArrayList<Integer> uncommon = new ArrayList<>();
         for (Integer itm: r2.items) {
-            if(!r1.has(itm))
-                uncommon.add(itm);
+            if(!r1.has(itm)) uncommon.add(itm);
         }
         return uncommon;
+    }
+
+    public double calculate_confidence (Record target, Record given_cond) {
+        double confidence = 0;
+        Record found = null;
+        for (Map.Entry<Integer, ArrayList<Record>> recs: support_counts.entrySet()) {
+            for (Record rec: recs.getValue()) {
+                if(rec.match(given_cond.items)) {
+                    found = rec;
+                    break;
+                }
+            }
+            if(found != null) break;
+        }
+        if (found != null) confidence = (double) target.count/ found.count;
+        return confidence;
     }
 }
