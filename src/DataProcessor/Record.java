@@ -47,11 +47,11 @@ public class Record {
         return  isMatch;
     }
 
-    public void print () {
-        System.out.println(recordId);
+    public String print () {
+        String result = "";
         for (Integer num: items) {
-            System.out.print(num + " ");
+            result += num + " ";
         }
-        System.out.println("Support count: " + count);
+        return result;
     }
 }

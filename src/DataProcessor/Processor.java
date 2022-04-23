@@ -26,8 +26,9 @@ public class Processor {
         Record target = support_counts.get(4).get(0);
         Record given = support_counts.get(1).get(4);
 
-        double conf = calculate_confidence(target, given);
-        System.out.println(conf);
+        double conf = calculate_confidence(target, given.items);
+//        System.out.println(conf);
+        confidence_for_all_cond(target.items);
     }
 
     private void generate_combinations () {
@@ -105,12 +106,37 @@ public class Processor {
         return uncommon;
     }
 
-    public double calculate_confidence (Record target, Record given_cond) {
+    public void confidence_for_all_cond (ArrayList<Integer> target) {
+        Record found = null;
+        for (Map.Entry<Integer, ArrayList<Record>> recs: support_counts.entrySet()) {
+            for (Record rec: recs.getValue()) {
+                if(rec.match(target)) {
+                    found = rec;
+                    break;
+                }
+            }
+            if(found != null) break;
+        }
+        if (found == null) return;
+
+        for (int i=1; i<target.size(); i++){
+            for(int j=0; j<support_counts.get(i).size(); j++) {
+                double conf = 0.0;
+                Record cond = support_counts.get(i).get(j);
+                if(found.has(cond.items)){
+                    conf = (double) found.count/cond.count;
+                    System.out.println("Cond: "+cond.print()+"-> item: "+found.print()+ " Conf: "+ conf*100+"%");
+                }
+            }
+        }
+    }
+
+    private double calculate_confidence (Record target, ArrayList<Integer> given_cond) {
         double confidence = 0;
         Record found = null;
         for (Map.Entry<Integer, ArrayList<Record>> recs: support_counts.entrySet()) {
             for (Record rec: recs.getValue()) {
-                if(rec.match(given_cond.items)) {
+                if(rec.match(given_cond)) {
                     found = rec;
                     break;
                 }
