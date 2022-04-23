@@ -1,10 +1,8 @@
 package MainPac;
 
 import DataProcessor.Processor;
-import DataProcessor.Record;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
