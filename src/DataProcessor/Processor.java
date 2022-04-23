@@ -22,9 +22,6 @@ public class Processor {
         this.input_processor = new Input(filePath);
         this.total_data_count = input_processor.databaseSize();
         generate_combinations();
-
-        Record target = support_counts.get(4).get(0);
-//        confidence_for_all_cond(target.items);
     }
 
     private void generate_combinations () {
