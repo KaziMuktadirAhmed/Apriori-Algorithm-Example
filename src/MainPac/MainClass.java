@@ -57,7 +57,7 @@ public class MainClass {
 
     public static void write_in_file(int len, ArrayList<Integer> items) throws IOException {
         FileWriter fileWriter = new FileWriter(new File("src/input.txt"), true);
-        String id = "\nS0"+len;
+        String id = "\nS00"+len;
         fileWriter.write(id+" ");
         for (Integer itm: items) {
             fileWriter.write(itm+" ");
